@@ -1,0 +1,19 @@
+﻿version: '3.9'
+
+services:
+    grpc-rest:
+        container_name: grpc-rest
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - '5000:80'
+            - '5001:443'
+            - '6000:6000'
+            - '6001:6001'
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticpassword
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/grpc_rest_api.pfx
+        volumes:
+            - ./https:/https
