@@ -9,7 +9,6 @@ services:
         ports:
             - '5000:5000'
             - '5001:5001'
-            - '6000:6000'
             - '6001:6001'
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
