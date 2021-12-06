@@ -53,7 +53,7 @@ namespace grpc_rest_api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapGrpcService<GreeterService>().RequireHost($"*:{_config["Grpc:HttpPort"]}", $"*:{_config["Grpc:HttpsPort"]}");
+                endpoints.MapGrpcService<GreeterService>().RequireHost($"*:{_config["Grpc:Port"]}");
                 if (env.IsDevelopment())
                 {
                     endpoints.MapGrpcReflectionService();
