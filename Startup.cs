@@ -23,6 +23,8 @@ namespace grpc_rest_api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc(options => { options.EnableDetailedErrors = true; });
+            services.AddGrpcReflection();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -33,12 +35,16 @@ namespace grpc_rest_api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            if (env.IsDevelopment())
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "auto_highlighter_highlights_service v1");
-                c.RoutePrefix = string.Empty;
-            });
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "auto_highlighter_highlights_service v1");
+                    c.RoutePrefix = string.Empty;
+                });
+            }
+
 
             app.UseRouting();
 
@@ -48,6 +54,10 @@ namespace grpc_rest_api
             {
                 endpoints.MapControllers();
                 endpoints.MapGrpcService<GreeterService>().RequireHost($"*:{_config["Grpc:HttpPort"]}", $"*:{_config["Grpc:HttpsPort"]}");
+                if (env.IsDevelopment())
+                {
+                    endpoints.MapGrpcReflectionService();
+                }
             });
         }
     }
