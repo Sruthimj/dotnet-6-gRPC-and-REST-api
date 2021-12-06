@@ -44,7 +44,12 @@ namespace grpc_rest_api
                     c.RoutePrefix = string.Empty;
                 });
             }
+            else
+            {
+                app.UseHsts();
+            }
 
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
