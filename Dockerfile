@@ -10,6 +10,7 @@ COPY ["grpc_rest_api.csproj", "./"]
 RUN dotnet restore "grpc_rest_api.csproj"
 COPY . .
 WORKDIR "/src/."
+RUN dotnet dev-certs https
 RUN dotnet build "grpc_rest_api.csproj" -c Release -o /app/build
 
 FROM build AS publish
